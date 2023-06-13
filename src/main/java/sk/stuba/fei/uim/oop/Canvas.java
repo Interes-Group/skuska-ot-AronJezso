@@ -7,10 +7,6 @@ import java.util.ArrayList;
 public class Canvas extends JPanel {
     private ArrayList<Obj> coordinates;
 
-    public ArrayList<Obj> getCoordinates() {
-        return coordinates;
-    }
-
     public void setCoordinates(ArrayList<Obj> coordinates) {
         this.coordinates = coordinates;
     }

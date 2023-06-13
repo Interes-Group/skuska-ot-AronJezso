@@ -2,11 +2,9 @@ package sk.stuba.fei.uim.oop;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Objects;
+
 
 public class Window extends Movement{
     JFrame window;
@@ -49,34 +47,25 @@ public class Window extends Movement{
 
         JPanel temporary = new JPanel();
         temporary.setLayout(new GridLayout(1,4));
-        dom.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                currentAct = 1;
-                currCol.setText("Dom");
-            }
+        dom.addActionListener(actionEvent -> {
+            currentAct = 1;
+            currCol.setText("Dom");
         });
         temporary.add(dom,0,0);
-        presun.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                currentAct = 2;
-                currCol.setText("Presun");
-            }
+        presun.addActionListener(actionEvent -> {
+            currentAct = 2;
+            currCol.setText("Presun");
         });
         temporary.add(presun,0,1);
-        dalsiaFarba.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                if(Mycolor.equals(Color.red)){
-                    Mycolor = Color.green;
-                } else if (Mycolor.equals(Color.green)) {
-                    Mycolor = Color.blue;
-                } else if (Mycolor.equals(Color.blue)) {
-                    Mycolor = Color.red;
-                }
-                currCol.setForeground(Mycolor);
+        dalsiaFarba.addActionListener(actionEvent -> {
+            if(Mycolor.equals(Color.red)){
+                Mycolor = Color.green;
+            } else if (Mycolor.equals(Color.green)) {
+                Mycolor = Color.blue;
+            } else if (Mycolor.equals(Color.blue)) {
+                Mycolor = Color.red;
             }
+            currCol.setForeground(Mycolor);
         });
         temporary.add(dalsiaFarba,0,2);
 
@@ -92,16 +81,14 @@ public class Window extends Movement{
         window.pack();
     }
 
-    Obj isHouseHere(int xM, int yM, ArrayList<Obj> cord){
+    Obj isHouseHere(int xM, int yM){
         for(int i= coordinates.size()-1;i!=-1;i--){
             Obj t = coordinates.get(i);
             int x = Math.min(t.getStartX(),t.getEndX());
             int y = Math.min(t.getStartY(),t.getEndY());
             int width = Math.abs(t.getStartX()-t.getEndX());
             int height = Math.abs(t.getStartY()-t.getEndY());
-
-            System.out.println(t.contains(xM,yM));
-            if(xM>=x+width*1/4 && xM<=x+width*3/4){
+            if(xM>=x+width/4 && xM<=x+width*3/4){
                 if(yM>=y && yM<=y+height){
                     System.out.println("Found house");
                     return t;
@@ -124,7 +111,7 @@ public class Window extends Movement{
             temp.setStartY(mouseEvent.getY());
             coordinates.add(temp);
         }else{
-            toMove = isHouseHere(mouseEvent.getX(),mouseEvent.getY(),coordinates);
+            toMove = isHouseHere(mouseEvent.getX(),mouseEvent.getY());
             MooveX = mouseEvent.getX();
             MooveY = mouseEvent.getY();
         }
