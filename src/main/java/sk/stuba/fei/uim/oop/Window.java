@@ -10,9 +10,9 @@ public class Window extends Movement{
     JFrame window;
     Canvas canvas;
 
-    JButton dom;
-    JButton presun;
-    JButton dalsiaFarba;
+    JButton house;
+    JButton move;
+    JButton nextColor;
     JLabel currCol;
     int currentAct;
     Color Mycolor;
@@ -24,11 +24,11 @@ public class Window extends Movement{
     public Window() {
         window = new JFrame();
         canvas = new Canvas();
-        dom = new JButton("Dom");
-        presun = new JButton("Presun");
-        dalsiaFarba = new JButton("Dalsia Farba");
+        house = new JButton("House");
+        move = new JButton("Move");
+        nextColor = new JButton("Next color");
         Mycolor = Color.red;
-        currCol = new JLabel("Dom");
+        currCol = new JLabel("House");
         currCol.setForeground(Mycolor);
         currCol.setHorizontalAlignment(SwingConstants.CENTER);
         currentAct = 1;
@@ -47,17 +47,17 @@ public class Window extends Movement{
 
         JPanel temporary = new JPanel();
         temporary.setLayout(new GridLayout(1,4));
-        dom.addActionListener(actionEvent -> {
+        house.addActionListener(actionEvent -> {
             currentAct = 1;
-            currCol.setText("Dom");
+            currCol.setText("House");
         });
-        temporary.add(dom,0,0);
-        presun.addActionListener(actionEvent -> {
+        temporary.add(house,0,0);
+        move.addActionListener(actionEvent -> {
             currentAct = 2;
-            currCol.setText("Presun");
+            currCol.setText("Move");
         });
-        temporary.add(presun,0,1);
-        dalsiaFarba.addActionListener(actionEvent -> {
+        temporary.add(move,0,1);
+        nextColor.addActionListener(actionEvent -> {
             if(Mycolor.equals(Color.red)){
                 Mycolor = Color.green;
             } else if (Mycolor.equals(Color.green)) {
@@ -67,7 +67,7 @@ public class Window extends Movement{
             }
             currCol.setForeground(Mycolor);
         });
-        temporary.add(dalsiaFarba,0,2);
+        temporary.add(nextColor,0,2);
 
 
 
