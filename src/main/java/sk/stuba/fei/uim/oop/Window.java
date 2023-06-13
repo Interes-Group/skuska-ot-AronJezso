@@ -90,13 +90,11 @@ public class Window extends Movement{
             int height = Math.abs(t.getStartY()-t.getEndY());
             if(xM>=x+width/4 && xM<=x+width*3/4){
                 if(yM>=y && yM<=y+height){
-                    System.out.println("Found house");
                     return t;
 
                 }
             }
         }
-        System.out.println("No house");
         return null;
 
     }
