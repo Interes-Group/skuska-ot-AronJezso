@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Window extends Movement{
     JFrame window;
@@ -18,6 +19,9 @@ public class Window extends Movement{
     int currentAct;
     Color Mycolor;
     int firstCoord;
+    Obj toMove;
+    int MooveX;
+    int MooveY;
     ArrayList<Obj> coordinates;
     public Window() {
         window = new JFrame();
@@ -32,6 +36,7 @@ public class Window extends Movement{
         currentAct = 1;
         firstCoord = 1;
         coordinates = new ArrayList<>();
+        toMove = new Obj();
         settings();
     }
 
@@ -87,26 +92,69 @@ public class Window extends Movement{
         window.pack();
     }
 
+    Obj isHouseHere(int xM, int yM, ArrayList<Obj> cord){
+        for(int i= coordinates.size()-1;i!=-1;i--){
+            Obj t = coordinates.get(i);
+            int x = Math.min(t.getStartX(),t.getEndX());
+            int y = Math.min(t.getStartY(),t.getEndY());
+            int width = Math.abs(t.getStartX()-t.getEndX());
+            int height = Math.abs(t.getStartY()-t.getEndY());
+
+            System.out.println(t.contains(xM,yM));
+            if(xM>=x+width*1/4 && xM<=x+width*3/4){
+                if(yM>=y && yM<=y+height){
+                    System.out.println("Found house");
+                    return t;
+
+                }
+            }
+        }
+        System.out.println("No house");
+        return null;
+
+    }
+
     @Override
     public void mousePressed(MouseEvent mouseEvent) {
-        super.mouseClicked(mouseEvent);
-        Obj temp =new Obj();
-        temp.setMyColor(Mycolor);
-        temp.setStartX(mouseEvent.getX());
-        temp.setStartY(mouseEvent.getY());
-        coordinates.add(temp);
+        if(currentAct == 1){
+            super.mouseClicked(mouseEvent);
+            Obj temp =new Obj();
+            temp.setMyColor(Mycolor);
+            temp.setStartX(mouseEvent.getX());
+            temp.setStartY(mouseEvent.getY());
+            coordinates.add(temp);
+        }else{
+            toMove = isHouseHere(mouseEvent.getX(),mouseEvent.getY(),coordinates);
+            MooveX = mouseEvent.getX();
+            MooveY = mouseEvent.getY();
+        }
+
     }
 
     @Override
     public void mouseDragged(MouseEvent mouseEvent) {
         super.mouseDragged(mouseEvent);
-        Obj temp;
-        temp = coordinates.get(coordinates.size()-1);
-        temp.setEndX(mouseEvent.getX());
-        temp.setEndY(mouseEvent.getY());
-        canvas.setCoordinates(coordinates);
-        canvas.repaint();
-        window.pack();
+        if(currentAct==1){
+            Obj temp;
+            temp = coordinates.get(coordinates.size()-1);
+            temp.setEndX(mouseEvent.getX());
+            temp.setEndY(mouseEvent.getY());
+            canvas.setCoordinates(coordinates);
+            canvas.repaint();
+            window.pack();
+        }else if(toMove!=null){
+            int Xoff = mouseEvent.getX()-MooveX  ;
+            int Yoff = mouseEvent.getY()-MooveY  ;
+            toMove.setStartX( toMove.getStartX() + Xoff);
+            toMove.setStartY( toMove.getStartY() + Yoff);
+            toMove.setEndX( toMove.getEndX() + Xoff );
+            toMove.setEndY( toMove.getEndY() + Yoff );
+            MooveX= mouseEvent.getX();
+            MooveY= mouseEvent.getY();
+            canvas.repaint();
+            window.pack();
+        }
+
     }
 
     @Override
